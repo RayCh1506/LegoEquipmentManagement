@@ -1,5 +1,4 @@
-﻿using EquipmentManagementPlatform.Domain.Models.Enums;
-using EquipmentManagementPlatform.DomainServices.Dtos;
+﻿using EquipmentManagementPlatform.DomainServices.Dtos;
 
 namespace EquipmentManagementPlatform.Domain.Models
 {
@@ -12,6 +11,15 @@ namespace EquipmentManagementPlatform.Domain.Models
             OperationalInformation = new OperationalInformationDto(equipment.OperationalInformation);
             OrderInformation = new OrderInformationDto(equipment.OrderInformation);
             HistoricStates = equipment.HistoricStates.Select(hs => new EquipmentHistoricStateDto(hs)).ToList();
+        }
+
+        public EquipmentDto(int id, GeneralInformationDto generalInformation, OperationalInformationDto operationalInformation, OrderInformationDto orderInformation, IEnumerable<EquipmentHistoricStateDto> historicStates)
+        {
+            Id = id;
+            GeneralInformation = generalInformation;
+            OperationalInformation = operationalInformation;
+            OrderInformation = orderInformation;
+            HistoricStates = historicStates;
         }
 
         public int Id { get; set; }
@@ -30,6 +38,13 @@ namespace EquipmentManagementPlatform.Domain.Models
             State = generalInformation.State.ToString();
         }
 
+        public GeneralInformationDto(string name, string location, string state)
+        {
+            Name = name;
+            Location = location;
+            State = state;
+        }
+
         public string Name { get; set; }
         public string Location { get; set; }
         public string State { get; set; }
@@ -45,6 +60,14 @@ namespace EquipmentManagementPlatform.Domain.Models
             Operator = operationalInformation.Operator;
         }
 
+        public OperationalInformationDto(bool isOperational, string faultMessage, double overallEquipmentEffectiveness, string employee)
+        {
+            IsOperational = isOperational;
+            FaultMessage = faultMessage;
+            OverallEquipmentEffectiveness = overallEquipmentEffectiveness;
+            Operator = employee;
+        }
+
         public bool IsOperational { get; set; }
         public string FaultMessage { get; set; }
         public double OverallEquipmentEffectiveness { get; set; }
@@ -53,6 +76,12 @@ namespace EquipmentManagementPlatform.Domain.Models
 
     public class OrderInformationDto
     {
+        public OrderInformationDto(int? currentOrder, IEnumerable<int> assignedOrders)
+        {
+            CurrentOrder = currentOrder;
+            AssignedOrders = assignedOrders;
+        }
+
         public OrderInformationDto(OrderInformation orderInformation)
         {
             CurrentOrder = orderInformation.CurrentOrder;

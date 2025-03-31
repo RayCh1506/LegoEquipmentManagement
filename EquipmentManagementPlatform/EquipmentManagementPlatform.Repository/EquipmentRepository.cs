@@ -87,7 +87,6 @@ namespace EquipmentManagementPlatform.Repository
             await UpdateEquipmentState(new UpdateEquipmentStateRequest(equipmentId, EquipmentState.RED.ToString(), equipment.CurrentOrder));
         }
 
-
         public async Task AddEquipmentOrders(int equipmentId, IEnumerable<int> equipmentOrders)
         {
             var equipment = await _equipmentContext.Equipment.FindAsync(equipmentId) ??

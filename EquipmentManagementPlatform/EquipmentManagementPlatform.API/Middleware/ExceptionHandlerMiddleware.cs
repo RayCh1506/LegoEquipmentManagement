@@ -1,7 +1,5 @@
 ﻿using EquipmentManagementPlatform.Domain.Exceptions;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Net;
 using System.Text.Json;
 
@@ -29,7 +27,7 @@ namespace EquipmentManagementPlatform.API.Middleware
                 await HandleExceptionAsync(context, ex);
             }
         }
-        public async Task HandleExceptionAsync(HttpContext context, Exception ex)
+        private async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             _logger.LogError("An {exceptionName} occured, {ex}", ex.GetType().Name, ex);
 
