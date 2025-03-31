@@ -1,4 +1,5 @@
 ﻿using EquipmentManagementPlatform.Domain.Models;
+using EquipmentManagementPlatform.Domain.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

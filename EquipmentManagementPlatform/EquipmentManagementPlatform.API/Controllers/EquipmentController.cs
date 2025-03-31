@@ -1,6 +1,6 @@
 using EquipmentManagementPlatform.Domain.Interfaces;
 using EquipmentManagementPlatform.Domain.Models;
-using EquipmentManagementPlatform.Domain.Models.Dtos;
+using EquipmentManagementPlatform.DomainServices.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EquipmentManagementPlatform.API.Controllers
@@ -53,14 +53,6 @@ namespace EquipmentManagementPlatform.API.Controllers
 
             return NoContent();
         }
-
-        //[HttpPatch("{equipmentId}/Register")]
-        //public async Task<ActionResult> RegisterEquipment(int equipmentId, [FromBody] RegisterEquipmentDto registerEquipmentDto)
-        //{
-        //    _logger.LogInformation("Received request to register new equipment with id {id}" , equipmentId);
-
-        //    return Created();
-        //}
 
         [HttpPost("{equipmentId}/Start")]
         public async Task<ActionResult> StartEquipment(int equipmentId, [FromBody] StartEquipmentDto startEquipmentDto)

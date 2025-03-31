@@ -1,4 +1,4 @@
-﻿namespace EquipmentManagementPlatform.Domain.Models
+﻿namespace EquipmentManagementPlatform.DomainServices.Dtos
 {
     public class UpdateStateDto
     {

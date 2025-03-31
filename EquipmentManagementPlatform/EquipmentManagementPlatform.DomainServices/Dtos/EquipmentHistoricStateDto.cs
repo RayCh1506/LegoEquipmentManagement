@@ -1,4 +1,7 @@
-﻿namespace EquipmentManagementPlatform.Domain.Models.Dtos
+﻿using EquipmentManagementPlatform.Domain.Models;
+using EquipmentManagementPlatform.Domain.Models.Enums;
+
+namespace EquipmentManagementPlatform.DomainServices.Dtos
 {
     public class EquipmentHistoricStateDto
     {
@@ -10,6 +13,13 @@
             OrderId = orderId;
         }
 
+        public EquipmentHistoricStateDto(EquipmentHistoricState historicState)
+        {
+            FromState = historicState.FromState.ToString();
+            ToState = historicState.ToState.ToString();
+            TimeOfChange = historicState.TimeOfChange;
+            OrderId = historicState.OrderId;
+        }
 
         public string FromState { get; set; }
         public string ToState { get; set; }

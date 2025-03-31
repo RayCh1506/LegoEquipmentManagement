@@ -38,10 +38,12 @@ export default function EquipmentDashboard() {
       )
     }
 
+    console.log(data);
+
     const filteredData = data!.filter(equipment => 
-        equipment.name.toLowerCase().includes(nameFilter.toLowerCase()) &&
-        equipment.location.toLowerCase().includes(locationFilter.toLowerCase()) &&
-        (isOperationalFilter === undefined || equipment.isOperational === isOperationalFilter)
+        equipment.generalInformation.name.toLowerCase().includes(nameFilter.toLowerCase()) &&
+        equipment.generalInformation.location.toLowerCase().includes(locationFilter.toLowerCase()) &&
+        (isOperationalFilter === undefined || equipment.operationalInformation.isOperational === isOperationalFilter)
       );
 
     return (

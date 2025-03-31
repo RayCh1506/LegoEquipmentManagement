@@ -1,4 +1,5 @@
 ﻿using EquipmentManagementPlatform.Domain.Exceptions;
+using EquipmentManagementPlatform.Domain.Models.Enums;
 
 namespace EquipmentManagementPlatform.Domain.Models
 {

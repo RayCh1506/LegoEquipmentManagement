@@ -1,5 +1,6 @@
 ﻿using EquipmentManagementPlatform.Domain.Interfaces;
 using EquipmentManagementPlatform.Domain.Models;
+using EquipmentManagementPlatform.Domain.Models.Enums;
 
 namespace EquipmentManagementPlatform.Integration.Equipment
 {
@@ -21,6 +22,12 @@ namespace EquipmentManagementPlatform.Integration.Equipment
         {
             // Simulate integration with equipment
             await Task.Delay(1000);
+        }
+
+        public async Task AddOrdersToEquipment(int id, IEnumerable<int> orderIds)
+        {
+            // Simulate integration with equipment
+            await Task.Delay(2000);
         }
     }
 }

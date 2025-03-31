@@ -1,39 +1,69 @@
-﻿namespace EquipmentManagementPlatform.Domain.Models
+﻿using EquipmentManagementPlatform.Domain.Models.Enums;
+
+namespace EquipmentManagementPlatform.Domain.Models
 {
     public class Equipment
     {
-        public Equipment(int id, string name, string location, EquipmentState state, bool isOperational, string faultMessage, IEnumerable<EquipmentHistoricState> historicStates,
-            IEnumerable<int> assignedOrders, double overallEquipmentEffectiveness, string employee)
+        public Equipment(int id, GeneralInformation generalInformation, OperationalInformation operationalInformation, OrderInformation orderInformation, IEnumerable<EquipmentHistoricState> historicStates)
         {
             Id = id;
+            GeneralInformation = generalInformation;
+            OperationalInformation = operationalInformation;
+            OrderInformation = orderInformation;
+            HistoricStates = historicStates;
+        }
+        public int Id { get; set; }
+        public GeneralInformation GeneralInformation { get; set; }
+        public OperationalInformation OperationalInformation { get; set; }
+        public OrderInformation OrderInformation { get; set; }
+        public IEnumerable<EquipmentHistoricState> HistoricStates { get; set; }
+        
+        
+    }
+
+    public class GeneralInformation
+    {
+        public GeneralInformation(string name, string location, EquipmentState state)
+        {
+            
             Name = name;
             Location = location;
             State = state;
+        }
+
+        public string Name { get; set; }
+        public string Location { get; set; }
+        public EquipmentState State { get; set; }
+    }
+
+    public class OperationalInformation
+    {
+        public OperationalInformation(bool isOperational, string faultMessage, double overallEquipmentEffectiveness, string employee)
+        {
             IsOperational = isOperational;
             FaultMessage = faultMessage;
-            HistoricStates = historicStates;
-            AssignedOrders = assignedOrders;
             OverallEquipmentEffectiveness = overallEquipmentEffectiveness;
             Operator = employee;
         }
+        public bool IsOperational { get; set; }
+        public string FaultMessage { get; set; }
+        public double OverallEquipmentEffectiveness { get; set; }
+        public string Operator { get; set; }
+    }
 
-        public Equipment(int id, string name, string location, EquipmentState state, bool isOperational, string faultMessage, IEnumerable<EquipmentHistoricState> historicStates, int? currentOrder,
-            IEnumerable<int> assignedOrders, double overallEquipmentEffectiveness, string employee)
-            : this(id, name, location, state, isOperational, faultMessage, historicStates, assignedOrders, overallEquipmentEffectiveness, employee)
+    public class OrderInformation
+    {
+        public OrderInformation(IEnumerable<int> assignedOrders, int? currentOrder) :this(assignedOrders)
         {
             CurrentOrder = currentOrder;
         }
 
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Location { get; set; }
-        public EquipmentState State { get; set; }
-        public bool IsOperational { get; set; }
-        public string FaultMessage {  get; set; }
-        public IEnumerable<EquipmentHistoricState> HistoricStates { get; set; }
+        public OrderInformation(IEnumerable<int> assignedOrders)
+        {
+            AssignedOrders = assignedOrders;
+        }
+
         public int? CurrentOrder { get; set; }
         public IEnumerable<int> AssignedOrders { get; set; }
-        public double OverallEquipmentEffectiveness { get; set; }
-        public string Operator { get; set; }
     }
 }

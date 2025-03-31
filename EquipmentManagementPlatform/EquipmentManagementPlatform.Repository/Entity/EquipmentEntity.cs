@@ -1,4 +1,5 @@
 ﻿using EquipmentManagementPlatform.Domain.Models;
+using EquipmentManagementPlatform.Domain.Models.Enums;
 
 namespace EquipmentManagementPlatform.Repository.Entity
 {

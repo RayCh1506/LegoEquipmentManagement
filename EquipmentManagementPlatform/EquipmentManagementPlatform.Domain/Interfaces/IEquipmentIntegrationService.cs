@@ -1,9 +1,4 @@
-﻿using EquipmentManagementPlatform.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EquipmentManagementPlatform.Domain.Models.Enums;
 
 namespace EquipmentManagementPlatform.Domain.Interfaces
 {
@@ -12,5 +7,6 @@ namespace EquipmentManagementPlatform.Domain.Interfaces
         Task UpdateEquipmentState(int id, EquipmentState equipmentState);
         Task AssignEquipmentOrders(int id, IEnumerable<int> orderIds);
         Task AssignEquipmentOperator(int id, string equipmentOperator);
+        Task AddOrdersToEquipment(int id, IEnumerable<int> orderIds);
     }
 }

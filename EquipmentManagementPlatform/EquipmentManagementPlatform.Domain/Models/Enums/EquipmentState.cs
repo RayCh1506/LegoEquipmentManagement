@@ -1,4 +1,4 @@
-﻿namespace EquipmentManagementPlatform.Domain.Models
+﻿namespace EquipmentManagementPlatform.Domain.Models.Enums
 {
     public enum EquipmentState
     {

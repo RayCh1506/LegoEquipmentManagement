@@ -2,6 +2,7 @@
 using EquipmentManagementPlatform.Domain.Exceptions;
 using EquipmentManagementPlatform.Domain.Interfaces;
 using EquipmentManagementPlatform.Domain.Models;
+using EquipmentManagementPlatform.Domain.Models.Enums;
 using EquipmentManagementPlatform.Repository.Context;
 using EquipmentManagementPlatform.Repository.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -114,7 +115,13 @@ namespace EquipmentManagementPlatform.Repository
             if (!Enum.TryParse(entity.State, out equipmentState))
                 throw new UnexpectedEnumValueException<EquipmentState>(entity.State);
 
-            return new Equipment(entity.Id, entity.Name, entity.Location, equipmentState, entity.IsOperational, entity.FaultMessage, historicStates, entity.CurrentOrder, entity.AssignedOrders, entity.OverallEquipmentEffectiveness, entity.Operator);
+            return new Equipment(
+                entity.Id,
+                new GeneralInformation(entity.Name, entity.Location, equipmentState),
+                new OperationalInformation(entity.IsOperational, entity.FaultMessage, entity.OverallEquipmentEffectiveness, entity.Operator),
+                new OrderInformation(entity.AssignedOrders, entity.CurrentOrder),
+                historicStates
+                );
         }
     }
 }

@@ -5,15 +5,15 @@ export default function OrderData(props: {equipment: Equipment, selectedOrder: n
     return (
         <div className="mt-4">
             <h3 className="text-sm font-semibold">Assigned Orders:</h3>
-            {props.equipment.assignedOrders && props.equipment.assignedOrders.length > 0 ? (
+            {props.equipment.orderInformation.assignedOrders && props.equipment.orderInformation.assignedOrders.length > 0 ? (
                 <div className="mt-4 flex flex-col items-center">
                         <ul className="list-disc pl-4">
-                        {props.equipment.assignedOrders.map((orderId) => (
+                        {props.equipment.orderInformation.assignedOrders.map((orderId) => (
                             <li key={orderId} className="text-sm">{orderId}</li>
                         ))}
                     </ul>
                     {
-                        props.equipment.state === "RED" && 
+                        props.equipment.generalInformation.state === "RED" && 
                         (
                             <>
                                 <label className="text-sm font-semibold mb-1">Select Order:</label>
@@ -23,7 +23,7 @@ export default function OrderData(props: {equipment: Equipment, selectedOrder: n
                                     onChange={(e) => props.setSelectedOrder(e.target.value ? Number(e.target.value) : undefined)}
                                 >
                                     <option value="">None</option>
-                                    {props.equipment.assignedOrders.map((orderId) => (
+                                    {props.equipment.orderInformation.assignedOrders.map((orderId) => (
                                         <option key={orderId} value={orderId}>{orderId}</option>
                                     ))}
                                 </select>

@@ -1,4 +1,4 @@
-﻿namespace EquipmentManagementPlatform.Domain.Models.Dtos
+﻿namespace EquipmentManagementPlatform.DomainServices.Dtos
 {
     public class StartEquipmentDto
     {

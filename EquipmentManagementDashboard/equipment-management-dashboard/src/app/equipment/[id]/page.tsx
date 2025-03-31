@@ -72,21 +72,21 @@ export default function EquipmentPage()
     if(data != null && data != undefined){
         return  (
             <div className="min-h-fit place-items-center">
-                {data.isOperational && !data.faultMessage && (
+                {data.operationalInformation.isOperational && !data.operationalInformation.faultMessage && (
                     <div className="mt-4 mb-2 flex flex-col items-center w-full">
                         <div className="flex space-x-4">
                             <button
-                                className={`text-white px-4 py-2 rounded-md ${data.state !== "RED" ? 'bg-gray-400 text-gray-500 cursor-not-allowed' : 'bg-blue-500'}`}
-                                onClick={() => data.state === "RED" && startMutation.mutate({ orderId: selectedOrder })}
-                                disabled={data.state !== "RED" || startMutation.isPending}
+                                className={`text-white px-4 py-2 rounded-md ${data.generalInformation.state !== "RED" ? 'bg-gray-400 text-gray-500 cursor-not-allowed' : 'bg-blue-500'}`}
+                                onClick={() => data.generalInformation.state === "RED" && startMutation.mutate({ orderId: selectedOrder })}
+                                disabled={data.generalInformation.state !== "RED" || startMutation.isPending}
                             >
                                 {startMutation.isPending ? "Starting..." : "Start Equipment"}
                             </button>
 
                             <button
-                                className={`text-white px-4 py-2 rounded-md ${data.state !== "GREEN" ? 'bg-gray-400 text-gray-500 cursor-not-allowed' : 'bg-yellow-500'}`}
-                                onClick={() => data.state === "GREEN" && stopMutation.mutate()}
-                                disabled={data.state !== "GREEN" || stopMutation.isPending}
+                                className={`text-white px-4 py-2 rounded-md ${data.generalInformation.state !== "GREEN" ? 'bg-gray-400 text-gray-500 cursor-not-allowed' : 'bg-yellow-500'}`}
+                                onClick={() => data.generalInformation.state === "GREEN" && stopMutation.mutate()}
+                                disabled={data.generalInformation.state !== "GREEN" || stopMutation.isPending}
                             >
                                 {stopMutation.isPending ? "Stopping..." : "Stop Equipment"}
                             </button>
@@ -96,16 +96,16 @@ export default function EquipmentPage()
                 <EquipmentData equipment={data}/>
                 <OrderData equipment={data} selectedOrder={selectedOrder} setSelectedOrder={setSelectedOrder}/>
                 <br/>
-                {!data.isOperational && data.faultMessage && (
-                    <p className="text-sm text-red-500">Fault: {data.faultMessage}</p>
+                {!data.operationalInformation.isOperational && data.operationalInformation.faultMessage && (
+                    <p className="text-sm text-red-500">Fault: {data.operationalInformation.faultMessage}</p>
                 )}
                 {
-                    data.isOperational && !data.faultMessage && (
+                    data.operationalInformation.isOperational && !data.operationalInformation.faultMessage && (
                         <div className="mt-4 flex flex-col items-center">
                         <label className="text-sm font-semibold mb-1">Change State:</label>
                         <div className="flex w-full space-x-2">
                             {(["RED", "YELLOW", "GREEN"] as EquipmentState[]).map((newState) => {
-                            const isDisabled = !allowedTransitions[data.state]?.includes(newState);
+                            const isDisabled = !allowedTransitions[data.generalInformation.state]?.includes(newState);
                             return (
                                 <button
                                 key={newState}
@@ -118,11 +118,11 @@ export default function EquipmentPage()
                                 }`}
                                 onClick={() => !isDisabled && changeStateMutation.mutate({ 
                                     newState, 
-                                    currentOrder: selectedOrder ?? data.currentOrder 
+                                    currentOrder: selectedOrder ?? data.orderInformation.currentOrder 
                                 })}
                                 disabled={isDisabled || changeStateMutation.isPending}
                                 >
-                                {changeStateMutation.isPending && newState === data.state ? "Updating..." : newState}
+                                {changeStateMutation.isPending && newState === data.generalInformation.state ? "Updating..." : newState}
                                 </button>
                             );
                             })}

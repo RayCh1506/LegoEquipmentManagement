@@ -1,4 +1,6 @@
-﻿namespace EquipmentManagementPlatform.Domain.Models
+﻿using EquipmentManagementPlatform.Domain.Models.Enums;
+
+namespace EquipmentManagementPlatform.Domain.Models
 {
     public class UpdateEquipmentStateRequest
     {

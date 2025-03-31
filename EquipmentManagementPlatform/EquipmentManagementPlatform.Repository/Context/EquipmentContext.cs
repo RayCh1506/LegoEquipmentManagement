@@ -1,4 +1,5 @@
 ﻿using EquipmentManagementPlatform.Domain.Models;
+using EquipmentManagementPlatform.Domain.Models.Enums;
 using EquipmentManagementPlatform.Repository.Entity;
 using Microsoft.EntityFrameworkCore;
 
