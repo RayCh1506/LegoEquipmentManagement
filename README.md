@@ -10,6 +10,7 @@ The login page is a mockup to simulate authentication and authorization. On this
 - None: The user is nog logged in, and is not able to see anything on the pages
 - Worker: The worker is able to see the dashboard, and see most of the information on the equipment details screen. Workers are not able to assign specific orders to equipment or see the state history of equipment
 - Supervisor: The supervisor is able to do and see everything the worker can. Additionally the supervisor is able to assign a specific order in the equipment order backlog for the equipment to work on. Supervisors are also able to see the history of equipment.
+  
 ![image](https://github.com/user-attachments/assets/ece3bd8e-1f34-4fc3-b8b6-9fe17b60a13c)
 
 The equipment dashboard shows an overview of all connected equipment.
@@ -25,6 +26,7 @@ The dashboard shows the following information:
   - Operator responsible for the equipment
   - OOE, How efficient the machine is
  Additionally, the dashboard offers filtering based on the machine name, location and whether the machine is operational or not
+
 ![image](https://github.com/user-attachments/assets/963cdc34-5837-4dbd-9473-864a717ebd33)
 
 The equipment details shows detailed information on a specific equipment. It shows all the information the dashboard shows, as well as additional information such as:
@@ -33,6 +35,7 @@ The equipment details shows detailed information on a specific equipment. It sho
 - Dropdown select to select a specific order to be started on, only visible when the machine is on RED (Only visible by supervisors)
 - Change state buttons
 - Show/Hide history button and the state history of the machine (Only visible by supervisors)
+
 ![image](https://github.com/user-attachments/assets/9252e192-d941-4980-b014-13b91753c45a)
 
      
