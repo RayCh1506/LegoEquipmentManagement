@@ -37,13 +37,13 @@ The equipment details shows detailed information on a specific equipment. It sho
 
      
 The backend offers the following API Calls:
-/Equipment/GetAll: Get all registered equipment
-/Equipment/{equipmentId}: Get specific equipment information
-/Equipment/{equipmentId}/UpdateState: Updates the equipment state to a desired state.
-/Equipment/{equipmentId}/Start: Starts the machine from RED to GREEN (YELLOW as intermediary state)
-/Equipment/{equipmentId]/Stop: Stops the machine from GREEN to RED (YELLOW as intermediary state)
-/Equipment/{equipmentId}/AddOrders: Adds a list of orders to its assigned orders backlog for a specific equipment
-/Equipment/{equipmentId}/AssignOperator: Assigns an operator to a specific equipment
+- /Equipment/GetAll: Get all registered equipment
+- /Equipment/{equipmentId}: Get specific equipment information
+- /Equipment/{equipmentId}/UpdateState: Updates the equipment state to a desired state.
+- /Equipment/{equipmentId}/Start: Starts the machine from RED to GREEN (YELLOW as intermediary state)
+- /Equipment/{equipmentId]/Stop: Stops the machine from GREEN to RED (YELLOW as intermediary state)
+- /Equipment/{equipmentId}/AddOrders: Adds a list of orders to its assigned orders backlog for a specific equipment
+- /Equipment/{equipmentId}/AssignOperator: Assigns an operator to a specific equipment
 
 Frontend technologies and libraries used:
 Next.js
