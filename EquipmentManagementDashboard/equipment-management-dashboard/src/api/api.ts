@@ -4,13 +4,13 @@ const BASE_URL = "https://localhost:7031/Equipment"
 
 export const fetchAllEquipment = async (): Promise<Equipment[]> => {
     const res = await fetch(`${BASE_URL}/GetAll`);
-    if (!res.ok) throw new Error('Failed to fetch all equipment information');
+    if (!res.ok) await handleErrorResponse(res);
     return res.json();
 };
 
 export const fetchEquipment = async (id: string) => {
     const res = await fetch(`${BASE_URL}/${id}`);
-    if (!res.ok) throw new Error('Failed to fetch equipment information');
+    if (!res.ok) await handleErrorResponse(res);
     return res.json();
 };
 
@@ -20,7 +20,7 @@ export const startEquipment = async (id: string, orderId: number | undefined) =>
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ orderId: orderId }),
     });
-    if (!res.ok) throw new Error("Failed to start equipment");
+    if (!res.ok) await handleErrorResponse(res);
 }
 
 export const stopEquipment = async (id: string) => {
@@ -28,14 +28,27 @@ export const stopEquipment = async (id: string) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
     });
-    if (!res.ok) throw new Error("Failed to stop equipment");
+    if (!res.ok) await handleErrorResponse(res);
 }
 
 export const updateEquipmentState = async ({ id, newState, currentOrder }: { id: string; newState: EquipmentState, currentOrder: number | undefined }) => {
     const res = await fetch(`${BASE_URL}/${id}/UpdateState`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ newState: newState, orderId: currentOrder }),
+        body: JSON.stringify({ newState, orderId: currentOrder }),
     });
-    if (!res.ok) throw new Error("Failed to update equipment state");
+
+    if (!res.ok) await handleErrorResponse(res);
+};
+
+const handleErrorResponse = async (res: Response) => {
+    let errorMessage = "Unknown error occurred";
+    try {
+        const errorData = await res.json();
+        console.error("Equipment Api Error:", errorData);
+        errorMessage = errorData.detail || errorData.title || errorMessage;
+    } catch (err) {
+        console.error("Failed to parse error response", err);
+    }
+    throw new Error(errorMessage);
 };

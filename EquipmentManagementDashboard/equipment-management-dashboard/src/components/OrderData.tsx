@@ -1,7 +1,7 @@
 import { Equipment } from "@/types/types";
 import { Dispatch, SetStateAction } from "react";
 
-export default function OrderData(props: {equipment: Equipment, selectedOrder: number | undefined, setSelectedOrder : Dispatch<SetStateAction<number | undefined>>}){
+export default function OrderData(props: {equipment: Equipment, selectedOrder: number | undefined, setSelectedOrder : Dispatch<SetStateAction<number | undefined>>, isSupervisor: boolean}){
     return (
         <div className="mt-4">
             <h3 className="text-sm font-semibold">Assigned Orders:</h3>
@@ -13,7 +13,7 @@ export default function OrderData(props: {equipment: Equipment, selectedOrder: n
                         ))}
                     </ul>
                     {
-                        props.equipment.generalInformation.state === "RED" && 
+                        props.equipment.generalInformation.state === "RED" && props.isSupervisor &&
                         (
                             <>
                                 <label className="text-sm font-semibold mb-1">Select Order:</label>

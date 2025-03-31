@@ -11,6 +11,7 @@ import { useUser } from "@/providers/UserContextProvider";
 import {EquipmentState} from "@/types/types"
 import OrderData from "@/components/OrderData";
 import EquipmentHistory from "@/components/EquipmentHistory";
+import toast from "react-hot-toast";
 
 export default function EquipmentPage() 
 {    
@@ -39,7 +40,14 @@ export default function EquipmentPage()
             queryClient.invalidateQueries({ queryKey: [`equipment-${params.id}`] });
             queryClient.invalidateQueries({ queryKey: ["equipment-all"] });
         },
-        onError: (error) => console.error("Failed to update equipment state:", error),
+        onError: (error) => {
+            console.error("Failed to update equipment state:", error);
+            toast.error(error.message, {
+                duration: 5000,
+                position: "top-center",
+                
+            })
+        }
     });
 
     const startMutation = useMutation({
@@ -47,7 +55,14 @@ export default function EquipmentPage()
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [`equipment-${params.id}`] });
         },
-        onError: (error) => console.error("Failed to start equipment:", error),
+        onError: (error) => {
+            console.error("Failed to start equipment:", error);
+            toast.error(error.message, {
+                duration: 5000,
+                position: "top-center",
+                
+            })
+        }
     });
 
     const stopMutation = useMutation({
@@ -55,28 +70,35 @@ export default function EquipmentPage()
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [`equipment-${params.id}`] });
         },
-        onError: (error) => console.error("Failed to stop equipment:", error),
+        onError: (error) => {
+            console.error("Failed to stop equipment:", error);
+            toast.error(error.message, {
+                duration: 5000,
+                position: "top-center"
+                
+            })
+        }
     });
 
     if(!user){
         return (
-          <div className="text-center text-2xl">
-              Please log in
-          </div>
+            <div className="text-center text-2xl">
+                You are not logged in, please log in to see access the page
+            </div>
         )
-      }
+    }
     
     if (isLoading) return <p className="text-center text-2xl">Loading...</p>;
-    if (error) return <p className="text-center text-2xl">Error loading data</p>;
+    if (error) return <p className="text-center text-2xl">Error loading data from the equipment management system</p>;
 
     if(data != null && data != undefined){
         return  (
-            <div className="min-h-fit place-items-center">
+            <div className="min-h-fit place-items-center border-4 bg-gray-300 rounded-lg p-4 ml-5 mr-5">
                 {data.operationalInformation.isOperational && !data.operationalInformation.faultMessage && (
                     <div className="mt-4 mb-2 flex flex-col items-center w-full">
                         <div className="flex space-x-4">
                             <button
-                                className={`text-white px-4 py-2 rounded-md ${data.generalInformation.state !== "RED" ? 'bg-gray-400 text-gray-500 cursor-not-allowed' : 'bg-blue-500'}`}
+                                className={`text-white px-4 py-2 rounded-md ${data.generalInformation.state !== "RED" ? 'bg-gray-400 text-gray-500 cursor-not-allowed' : 'bg-green-500'}`}
                                 onClick={() => data.generalInformation.state === "RED" && startMutation.mutate({ orderId: selectedOrder })}
                                 disabled={data.generalInformation.state !== "RED" || startMutation.isPending}
                             >
@@ -84,7 +106,7 @@ export default function EquipmentPage()
                             </button>
 
                             <button
-                                className={`text-white px-4 py-2 rounded-md ${data.generalInformation.state !== "GREEN" ? 'bg-gray-400 text-gray-500 cursor-not-allowed' : 'bg-yellow-500'}`}
+                                className={`text-white px-4 py-2 rounded-md ${data.generalInformation.state !== "GREEN" ? 'bg-gray-400 text-gray-500 cursor-not-allowed' : 'bg-red-500'}`}
                                 onClick={() => data.generalInformation.state === "GREEN" && stopMutation.mutate()}
                                 disabled={data.generalInformation.state !== "GREEN" || stopMutation.isPending}
                             >
@@ -94,39 +116,40 @@ export default function EquipmentPage()
                     </div>
                 )}
                 <EquipmentData equipment={data}/>
-                <OrderData equipment={data} selectedOrder={selectedOrder} setSelectedOrder={setSelectedOrder}/>
+                <OrderData equipment={data} selectedOrder={selectedOrder} setSelectedOrder={setSelectedOrder} isSupervisor={isSupervisor}/>
                 <br/>
-                {!data.operationalInformation.isOperational && data.operationalInformation.faultMessage && (
-                    <p className="text-sm text-red-500">Fault: {data.operationalInformation.faultMessage}</p>
-                )}
                 {
                     data.operationalInformation.isOperational && !data.operationalInformation.faultMessage && (
                         <div className="mt-4 flex flex-col items-center">
                         <label className="text-sm font-semibold mb-1">Change State:</label>
-                        <div className="flex w-full space-x-2">
-                            {(["RED", "YELLOW", "GREEN"] as EquipmentState[]).map((newState) => {
-                            const isDisabled = !allowedTransitions[data.generalInformation.state]?.includes(newState);
-                            return (
-                                <button
-                                key={newState}
-                                className={`flex-1 px-4 py-2 rounded-md font-semibold text-white ${isDisabled ? 'bg-gray-400 text-gray-500 cursor-not-allowed' :
-                                    newState === "RED" 
-                                    ? "bg-red-500" 
-                                    : newState === "YELLOW" 
-                                    ? "bg-yellow-500" 
-                                    : "bg-green-500"
-                                }`}
-                                onClick={() => !isDisabled && changeStateMutation.mutate({ 
-                                    newState, 
-                                    currentOrder: selectedOrder ?? data.orderInformation.currentOrder 
+                        {changeStateMutation.isPending ? (
+                            <p className="text-center text-lg font-semibold">Updating...</p>
+                        ) : (
+                            <div className="flex w-full space-x-2">
+                                {(["RED", "YELLOW", "GREEN"] as EquipmentState[]).map((newState) => {
+                                    const isDisabled = !allowedTransitions[data.generalInformation.state]?.includes(newState);
+                                    return (
+                                        <button
+                                            key={newState}
+                                            className={`flex-1 px-4 py-2 rounded-md font-semibold text-white ${isDisabled ? 'bg-gray-400 text-gray-500 cursor-not-allowed' :
+                                                newState === "RED" 
+                                                ? "bg-red-500" 
+                                                : newState === "YELLOW" 
+                                                ? "bg-yellow-500" 
+                                                : "bg-green-500"
+                                            }`}
+                                            onClick={() => !isDisabled && changeStateMutation.mutate({ 
+                                                newState, 
+                                                currentOrder: selectedOrder ?? data.orderInformation.currentOrder 
+                                            })}
+                                            disabled={isDisabled}
+                                        >
+                                            {newState}
+                                        </button>
+                                    );
                                 })}
-                                disabled={isDisabled || changeStateMutation.isPending}
-                                >
-                                {changeStateMutation.isPending && newState === data.generalInformation.state ? "Updating..." : newState}
-                                </button>
-                            );
-                            })}
-                        </div>
+                            </div>
+                        )}
                         </div>
                     )
                 }

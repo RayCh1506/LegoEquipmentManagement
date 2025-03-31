@@ -6,7 +6,7 @@ export default function EquipmentHistory(props: {equipment: Equipment}){
     return (
         <div className="mt-4 flex flex-col items-center w-full">
             <button 
-                className="bg-red-500 text-white px-4 py-2 rounded-md"
+                className="bg-gray-700 text-white px-4 py-2 rounded-md"
                 onClick={() => setIsExpanded(!isExpanded)}
             >
                 {isExpanded ? "Hide History" : "Show History"}

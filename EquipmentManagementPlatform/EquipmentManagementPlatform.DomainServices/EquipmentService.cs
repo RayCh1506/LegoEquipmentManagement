@@ -67,7 +67,7 @@ namespace EquipmentManagementPlatform.DomainServices
             ValidateStartEquipmentConditions(equipment, orderId);
 
             // Added integration mock in the repository for simplicity
-            await _equipmentRepository.StartEquipment(equipmentId, equipment.OrderInformation.AssignedOrders.First());
+            await _equipmentRepository.StartEquipment(equipmentId, orderId ?? equipment.OrderInformation.AssignedOrders.First());
         }
 
         public async Task StopEquiment(int equipmentId)

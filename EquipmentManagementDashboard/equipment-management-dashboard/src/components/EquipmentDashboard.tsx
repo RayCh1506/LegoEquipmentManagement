@@ -20,21 +20,21 @@ export default function EquipmentDashboard() {
     });
 
     if (isLoading) return <p className="text-center text-2xl">Loading...</p>;
-    if (error) return <p className="text-center text-2xl">Error loading data</p>;
+    if (error) return <p className="text-center text-2xl">Error loading data from the equipment management system</p>;
 
     if(!data || data.length <= 0){
       return (
         <div className="text-center text-2xl">
-            No equipment available
+            No equipment is available to be displayed
         </div>
       )
     }
 
     if(!user){
       return (
-        <div className="text-center text-2xl">
-            Please log in
-        </div>
+          <div className="text-center text-2xl">
+              You are not logged in, please log in to see access the page
+          </div>
       )
     }
 
