@@ -33,7 +33,8 @@ The equipment details shows detailed information on a specific equipment. It sho
 - Dropdown select to select a specific order to be started on, only visible when the machine is on RED (Only visible by supervisors)
 - Change state buttons
 - Show/Hide history button and the state history of the machine (Only visible by supervisors)
-![image](https://github.com/user-attachments/assets/4a4f780e-8655-4664-b3a5-f2e28675700d)
+![image](https://github.com/user-attachments/assets/9252e192-d941-4980-b014-13b91753c45a)
+
      
 The backend offers the following API Calls:
 /Equipment/GetAll: Get all registered equipment
