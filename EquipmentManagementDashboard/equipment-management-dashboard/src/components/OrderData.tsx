@@ -1,39 +1,50 @@
 import { Equipment } from "@/types/types";
 import { Dispatch, SetStateAction } from "react";
 
-export default function OrderData(props: {equipment: Equipment, selectedOrder: number | undefined, setSelectedOrder : Dispatch<SetStateAction<number | undefined>>, isSupervisor: boolean}){
+export default function OrderData({
+    equipment,
+    selectedOrder,
+    setSelectedOrder,
+    isSupervisor
+}: {
+    equipment: Equipment;
+    selectedOrder: number | undefined;
+    setSelectedOrder: Dispatch<SetStateAction<number | undefined>>;
+    isSupervisor: boolean;
+}) {
     return (
-        <div className="mt-4">
-            <h3 className="text-sm font-semibold">Assigned Orders:</h3>
-            {props.equipment.orderInformation.assignedOrders && props.equipment.orderInformation.assignedOrders.length > 0 ? (
-                <div className="mt-4 flex flex-col items-center">
-                        <ul className="list-disc pl-4">
-                        {props.equipment.orderInformation.assignedOrders.map((orderId) => (
-                            <li key={orderId} className="text-sm">{orderId}</li>
+        <div className="mt-4 w-full p-3 rounded-lg border border-gray-300">
+            <h3 className="text-md font-semibold text-gray-800">Assigned Orders</h3>
+
+            {equipment.orderInformation.assignedOrders.length > 0 ? (
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                    <ul className="flex flex-wrap gap-2">
+                        {equipment.orderInformation.assignedOrders.map((orderId) => (
+                            <li key={orderId} className="text-sm px-2 py-1 bg-gray-100 rounded-md border">
+                                {orderId}
+                            </li>
                         ))}
                     </ul>
-                    {
-                        props.equipment.generalInformation.state === "RED" && props.isSupervisor &&
-                        (
-                            <>
-                                <label className="text-sm font-semibold mb-1">Select Order:</label>
-                                <select
-                                    className="px-3 py-2 border rounded-md text-black w-full max-w-[200px] mb-2"
-                                    value={props.selectedOrder ?? ""}
-                                    onChange={(e) => props.setSelectedOrder(e.target.value ? Number(e.target.value) : undefined)}
-                                >
-                                    <option value="">None</option>
-                                    {props.equipment.orderInformation.assignedOrders.map((orderId) => (
-                                        <option key={orderId} value={orderId}>{orderId}</option>
-                                    ))}
-                                </select>
-                            </>
-                        )
-                    }
+
+                    {equipment.generalInformation.state === "RED" && isSupervisor && (
+                        <div className="ml-auto">
+                            <label className="text-sm font-semibold mr-2">Select Order:</label>
+                            <select
+                                className="px-3 py-1 border rounded-md bg-white shadow-sm text-sm"
+                                value={selectedOrder ?? ""}
+                                onChange={(e) => setSelectedOrder(e.target.value ? Number(e.target.value) : undefined)}
+                            >
+                                <option value="">None</option>
+                                {equipment.orderInformation.assignedOrders.map((orderId) => (
+                                    <option key={orderId} value={orderId}>{orderId}</option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
                 </div>
-            ) :  (
-                <p className="text-sm text-gray-500">No assigned orders</p>
+            ) : (
+                <p className="text-sm text-gray-600 mt-1">No assigned orders</p>
             )}
         </div>
-    )
+    );
 }

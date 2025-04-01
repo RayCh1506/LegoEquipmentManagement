@@ -1,6 +1,6 @@
 import { Equipment, EquipmentState } from "@/types/types";
 
-const BASE_URL = "https://localhost:7031/Equipment"
+const BASE_URL = "https://localhost:5001/Equipment"
 
 export const fetchAllEquipment = async (): Promise<Equipment[]> => {
     const res = await fetch(`${BASE_URL}/GetAll`);

@@ -1,20 +1,20 @@
 "use client"
 
-import { Fragment, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import EquipmentCard from './EquipmentCard';
-import { fetchAllEquipment } from '@/api/api';
-import { Equipment } from '@/types/types';
-import { useUser } from '@/providers/UserContextProvider';
+import { Fragment, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import EquipmentCard from "./EquipmentCard";
+import { fetchAllEquipment } from "@/api/api";
+import { Equipment } from "@/types/types";
+import { useUser } from "@/providers/UserContextProvider";
 
 export default function EquipmentDashboard() {
-    const [nameFilter, setNameFilter] = useState('');
-    const [locationFilter, setLocationFilter] = useState('');
+    const [nameFilter, setNameFilter] = useState("");
+    const [locationFilter, setLocationFilter] = useState("");
     const [isOperationalFilter, setIsOperationalFilter] = useState<boolean | undefined>(undefined)
-    const { user } = useUser(); 
+    const { user} = useUser();
     
     const { data, error, isLoading } = useQuery<Equipment[]>({
-      queryKey: ['equipment-all'],
+      queryKey: ["equipment-all"],
       queryFn: fetchAllEquipment,
       refetchInterval: 5000, // Poll every 5 seconds for updates, simulates live updates. SignalR is a better alternative
     });
@@ -47,8 +47,8 @@ export default function EquipmentDashboard() {
       );
 
     return (
-      <div className="w-screen flex justify-center">
-        <div className="max-w-11/12 w-full max-h-[77vh] overflow-y-auto mt-10 border-4 bg-gray-600 rounded-lg p-4">
+      <div className="w-screen flex items-center justify-center place-items-center">
+        <div className="max-w-11/12 mx-auto w-full max-h-[77vh] overflow-y-auto mt-10 border-4 bg-gray-600 rounded-lg p-4">
           <h1 className="text-xl font-bold mb-4 text-center">Equipment list</h1>  
           <div className="mb-4 flex gap-4">
             <input 

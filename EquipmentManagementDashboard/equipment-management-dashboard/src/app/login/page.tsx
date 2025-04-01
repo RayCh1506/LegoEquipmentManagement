@@ -4,7 +4,7 @@ import { useUser } from "@/providers/UserContextProvider";
 
 export default function LoginPage() 
 {
-    const { user, setUser } = useUser();
+    const {user, setUser} = useUser();
 
     return (
         <div className="place-items-center">
