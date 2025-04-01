@@ -31,6 +31,8 @@ namespace EquipmentManagementPlatform.DomainServices
 
         public async Task UpdateEquipmentState(UpdateEquipmentStateRequest request)
         {
+            _logger.LogInformation("Handling state and order logic of the equipment state update for equipment with id: {id}", request.EquipmentId);
+
             var equipment = await _equipmentRepository.GetById(request.EquipmentId);
 
             if (!IsValidTransition(equipment.GeneralInformation.State, request.NewState))

@@ -1,7 +1,7 @@
 import { EquipmentHistory, EquipmentState } from "@/types/types";
 import React from "react";
 
-export default function TimelineBar(props: {history: EquipmentHistory[]}){
+export default function TimelineBar(/*props: {history: EquipmentHistory[]}*/){
 
   const mockData: EquipmentHistory[] = [
     {fromState: "RED", toState: "YELLOW", timeOfChange: '2025-03-31T00:00:00.4959711', orderId: undefined},
@@ -47,8 +47,6 @@ export default function TimelineBar(props: {history: EquipmentHistory[]}){
   if(new Date(lastTransition.timeOfChange) < new Date()){
     segments.push({start: lastTransition.timeOfChange, end: new Date().toISOString(), color: stateColors[lastTransition.toState] })
   }
-
-  console.log(segments)
 
   const timeLabels = Array.from({ length: 9 }, (_, i) => {
     const hour = i * 3;

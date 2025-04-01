@@ -1,7 +1,9 @@
+using EquipmentManagementPlatform.API.Websockets;
 using EquipmentManagementPlatform.Domain.Interfaces;
 using EquipmentManagementPlatform.Domain.Models;
 using EquipmentManagementPlatform.DomainServices.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace EquipmentManagementPlatform.API.Controllers
 {
@@ -11,11 +13,13 @@ namespace EquipmentManagementPlatform.API.Controllers
     {
         private readonly ILogger<EquipmentController> _logger;
         private readonly IEquipmentService _equipmentService;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public EquipmentController(ILogger<EquipmentController> logger, IEquipmentService equipmentService)
+        public EquipmentController(ILogger<EquipmentController> logger, IEquipmentService equipmentService, IHubContext<NotificationHub> hubContext)
         {
             _logger = logger;
             _equipmentService = equipmentService;
+            _hubContext = hubContext;
         }
 
         [HttpGet("GetAll")]
@@ -51,13 +55,19 @@ namespace EquipmentManagementPlatform.API.Controllers
 
             await _equipmentService.UpdateEquipmentState(domainRequest);
 
+            await _hubContext.Clients.All.SendAsync("StateUpdate", equipmentId);
+
             return NoContent();
         }
 
         [HttpPost("{equipmentId}/Start")]
         public async Task<ActionResult> StartEquipment(int equipmentId, [FromBody] StartEquipmentDto startEquipmentDto)
         {
+            _logger.LogInformation("Received request to start equipment with id {equipmentId}", equipmentId);
+
             await _equipmentService.StartEquipment(equipmentId, startEquipmentDto?.OrderId);
+
+            await _hubContext.Clients.All.SendAsync("StateUpdate", equipmentId);
 
             return NoContent();
         }
@@ -65,7 +75,11 @@ namespace EquipmentManagementPlatform.API.Controllers
         [HttpPost("{equipmentId}/Stop")]
         public async Task<ActionResult> StopEquipment(int equipmentId)
         {
+            _logger.LogInformation("Received request to stop equipment with id {equipmentId}", equipmentId);
+
             await _equipmentService.StopEquiment(equipmentId);
+
+            await _hubContext.Clients.All.SendAsync("StateUpdate", equipmentId);
 
             return NoContent();
         }
@@ -73,7 +87,10 @@ namespace EquipmentManagementPlatform.API.Controllers
         [HttpPatch("{equipmentId}/AddOrders")]
         public async Task<ActionResult> AddEquipmentOrders(int equipmentId, [FromBody] AddEquipmentOrdersDto addEquipmentOrdersDto)
         {
+
             ValidateAddEquipmentOrdersDto(addEquipmentOrdersDto);
+
+            _logger.LogInformation("Received request to assign additional orders to equipment with id: {equipmentId} with orders: {orders}", equipmentId, string.Join(",", addEquipmentOrdersDto.EquipmentOrders));
 
             await _equipmentService.AddEquipmentOrders(equipmentId, addEquipmentOrdersDto.EquipmentOrders);
 
@@ -84,6 +101,8 @@ namespace EquipmentManagementPlatform.API.Controllers
         public async Task<ActionResult> AssignOperator(int equipmentId, [FromBody] AssignEquipmentOperatorDto assignOperatorDto)
         {
             ValidateAssignEquipmentOperatorDto(assignOperatorDto);
+
+            _logger.LogInformation("Persisting assignment employee: {employee} to equipment with id: {id}", assignOperatorDto.Employee, equipmentId);
 
             await _equipmentService.AssignOperator(equipmentId, assignOperatorDto.Employee);
 

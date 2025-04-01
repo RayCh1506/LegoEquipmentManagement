@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using EquipmentManagementPlatform.Domain.Exceptions;
+﻿using EquipmentManagementPlatform.Domain.Exceptions;
 using EquipmentManagementPlatform.Domain.Interfaces;
 using EquipmentManagementPlatform.Domain.Models;
 using EquipmentManagementPlatform.Domain.Models.Enums;
@@ -23,7 +22,7 @@ namespace EquipmentManagementPlatform.Repository
 
         public async Task<IEnumerable<Equipment>> GetAllEquipmentAsync()
         {
-            _logger.LogInformation("Initiated all equipment fetch");
+            _logger.LogInformation("Querying from db: all equipment fetch");
 
             var equipmentEntities = await _equipmentContext.Equipment.Include(e => e.HistoricStates).ToListAsync();
 
@@ -33,7 +32,7 @@ namespace EquipmentManagementPlatform.Repository
 
         public async Task<Equipment> GetById(int equipmentId)
         {
-            _logger.LogInformation("Initiated equipment fetch for {equipmentId}", equipmentId);
+            _logger.LogInformation("Querying from db: equipment fetch for {equipmentId}", equipmentId);
 
             var entity = await _equipmentContext.Equipment.Include(e => e.HistoricStates).SingleOrDefaultAsync(e => e.Id.Equals(equipmentId)) ??
                 throw new EquipmentNotFoundException(equipmentId);
@@ -43,7 +42,7 @@ namespace EquipmentManagementPlatform.Repository
  
         public async Task UpdateEquipmentState(UpdateEquipmentStateRequest request)
         {
-            _logger.LogInformation("Initiated equipment update for {id} to state {newState}", request.EquipmentId, request.NewState);
+            _logger.LogInformation("Persisting equipment update for {id} to state {newState}", request.EquipmentId, request.NewState);
             
             var equipment = await _equipmentContext.Equipment.Include(e => e.HistoricStates).SingleOrDefaultAsync(e => e.Id.Equals(request.EquipmentId)) ?? 
                 throw new EquipmentNotFoundException(request.EquipmentId);
@@ -61,6 +60,8 @@ namespace EquipmentManagementPlatform.Repository
 
         public async Task StartEquipment(int equipmentId, int orderId)
         {
+            _logger.LogInformation("Persisting start equipment action for {equipmentId}", equipmentId);
+
             var equipment = await _equipmentContext.Equipment.FindAsync(equipmentId) ??
                 throw new EquipmentNotFoundException(equipmentId);
             equipment.CurrentOrder = orderId;
@@ -75,6 +76,8 @@ namespace EquipmentManagementPlatform.Repository
 
         public async Task StopEquipment(int equipmentId)
         {
+            _logger.LogInformation("Persisting stop equipment action for {equipmentId}", equipmentId);
+
             var equipment = await _equipmentContext.Equipment.FindAsync(equipmentId) ??
                 throw new EquipmentNotFoundException(equipmentId);
             equipment.CurrentOrder = null;
@@ -89,6 +92,7 @@ namespace EquipmentManagementPlatform.Repository
 
         public async Task AddEquipmentOrders(int equipmentId, IEnumerable<int> equipmentOrders)
         {
+            _logger.LogInformation("Persisting new orders to {equipmentId}: {orders}", equipmentId, string.Join(",", equipmentOrders));
             var equipment = await _equipmentContext.Equipment.FindAsync(equipmentId) ??
                 throw new EquipmentNotFoundException(equipmentId);
             equipment.AssignedOrders = [..equipment.AssignedOrders, ..equipmentOrders];
@@ -98,6 +102,8 @@ namespace EquipmentManagementPlatform.Repository
 
         public async Task AssignOperator(int equipmentId, string employee)
         {
+            _logger.LogInformation("Persisting assignment employee: {employee} to equipment with id: {id}", employee, equipmentId);
+
             var equipment = await _equipmentContext.Equipment.FindAsync(equipmentId) ??
                 throw new EquipmentNotFoundException(equipmentId);
 

@@ -5,13 +5,14 @@ import { getQueryClient } from "@/utils/getQueryClient";
 import { Equipment } from "@/types/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EquipmentData from "@/components/EquipmentData";
 import { useUser } from "@/providers/UserContextProvider";
 import {EquipmentState} from "@/types/types"
 import OrderData from "@/components/OrderData";
 import EquipmentHistory from "@/components/EquipmentHistory";
 import toast from "react-hot-toast";
+import { useSignalRWithId } from "@/hooks/signalR";
 
 export default function EquipmentPage() {    
     const params = useParams<{ id: string }>();
@@ -19,6 +20,8 @@ export default function EquipmentPage() {
     const [selectedOrder, setSelectedOrder] = useState<number | undefined>(undefined);
     const { user } = useUser();
     const isSupervisor = user === "Supervisor";
+
+    useSignalRWithId(params.id);
 
     const allowedTransitions: Record<string, EquipmentState[]> = {
         RED: ["YELLOW"],
@@ -34,19 +37,11 @@ export default function EquipmentPage() {
     const changeStateMutation = useMutation({
         mutationFn: ({ newState, currentOrder }: { newState: EquipmentState, currentOrder: number | undefined }) => 
             updateEquipmentState({ id: params.id, newState, currentOrder }),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [`equipment-${params.id}`] });
-            queryClient.invalidateQueries({ queryKey: ["equipment-all"] });
-        },
         onError: (error) => toast.error(error.message, { duration: 5000, position: "top-center" }),
     });
 
     const startMutation = useMutation({
         mutationFn: ({ orderId }: { orderId: number | undefined }) => startEquipment(params.id, orderId),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: [`equipment-${params.id}`] });
-            queryClient.invalidateQueries({ queryKey: ["equipment-all"] });
-        },
         onError: (error) => toast.error(error.message, { duration: 5000, position: "top-center" }),
     });
 

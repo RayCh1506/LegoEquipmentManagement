@@ -6,6 +6,7 @@ import EquipmentCard from "./EquipmentCard";
 import { fetchAllEquipment } from "@/api/api";
 import { Equipment } from "@/types/types";
 import { useUser } from "@/providers/UserContextProvider";
+import { useSignalRAll } from "@/hooks/signalR";
 
 export default function EquipmentDashboard() {
     const [nameFilter, setNameFilter] = useState("");
@@ -15,9 +16,10 @@ export default function EquipmentDashboard() {
     
     const { data, error, isLoading } = useQuery<Equipment[]>({
       queryKey: ["equipment-all"],
-      queryFn: fetchAllEquipment,
-      refetchInterval: 5000, // Poll every 5 seconds for updates, simulates live updates. SignalR is a better alternative
+      queryFn: fetchAllEquipment
     });
+
+    useSignalRAll();
 
     if (isLoading) return <p className="text-center text-2xl">Loading...</p>;
     if (error) return <p className="text-center text-2xl">Error loading data from the equipment management system</p>;
@@ -37,8 +39,6 @@ export default function EquipmentDashboard() {
           </div>
       )
     }
-
-    console.log(data);
 
     const filteredData = data!.filter(equipment => 
         equipment.generalInformation.name.toLowerCase().includes(nameFilter.toLowerCase()) &&
@@ -88,5 +88,4 @@ export default function EquipmentDashboard() {
         </div>
       </div>
       );
-    
 }

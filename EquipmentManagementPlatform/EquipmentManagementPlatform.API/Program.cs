@@ -1,4 +1,5 @@
 using EquipmentManagementPlatform.API.Middleware;
+using EquipmentManagementPlatform.API.Websockets;
 using EquipmentManagementPlatform.DomainServices.Bindings;
 using EquipmentManagementPlatform.Integration.Equipment.Bindings;
 using EquipmentManagementPlatform.Repository.Bindings;
@@ -14,6 +15,8 @@ EquipmentDomainServicesBindings.ConfigureBindings(builder.Services);
 EquipmentRepositoryBindings.ConfigureBindings(builder.Services, builder.Configuration);
 EquipmentIntegrationBindings.ConfigureBindings(builder.Services);
 
+builder.Services.AddSignalR();
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -27,6 +30,7 @@ builder.Services.AddCors(options =>
                           policy.WithOrigins("http://localhost:3000");
                           policy.AllowAnyMethod();
                           policy.AllowAnyHeader();
+                          policy.AllowCredentials();
                       });
 });
 
@@ -51,8 +55,10 @@ app.UseHttpsRedirection();
 
 app.UseCors(CUSTOM_CORS_POLICY_NAME);
 
-app.UseAuthorization();
 
+app.UseRouting();
+app.UseAuthorization();
+app.MapHub<NotificationHub>("/notificationHub");
 app.MapControllers();
 
 app.Run();
