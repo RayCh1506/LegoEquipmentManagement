@@ -27,7 +27,7 @@ The dashboard shows the following information:
   - OOE, How efficient the machine is
  Additionally, the dashboard offers filtering based on the machine name, location and whether the machine is operational or not
 
-![image](https://github.com/user-attachments/assets/963cdc34-5837-4dbd-9473-864a717ebd33)
+![image](https://github.com/user-attachments/assets/ab7ead9c-23d4-4965-b82d-020fd23a2558)
 
 The equipment details shows detailed information on a specific equipment. It shows all the information the dashboard shows, as well as additional information such as:
 - Start/Stop buttons to Start/Stop the machine, only possible if the state is on RED/GREEN
@@ -36,9 +36,8 @@ The equipment details shows detailed information on a specific equipment. It sho
 - Change state buttons
 - Show/Hide history button and the state history of the machine (Only visible by supervisors)
 
-![image](https://github.com/user-attachments/assets/9252e192-d941-4980-b014-13b91753c45a)
+![image](https://github.com/user-attachments/assets/59fa08fa-1dbe-49a8-9a27-874648b5bfca)
 
-     
 The backend offers the following API Calls:
 - /Equipment/GetAll: Get all registered equipment
 - /Equipment/{equipmentId}: Get specific equipment information
