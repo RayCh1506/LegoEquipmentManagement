@@ -49,19 +49,22 @@ The backend offers the following API Calls:
 - /Equipment/{equipmentId}/AssignOperator: Assigns an operator to a specific equipment
 
 Frontend technologies and libraries used:
-Next.js
-React Query
-Lucide react
-React Hot Toast
+- Next.js
+- React Query
+- Lucide react
+- React Hot Toast
+- SignalR
 
 Backend technologies and libraries used:
-.NET8
-Microsoft Extensions Logging
-AspNetCore Swashbuckle
-NUnit
-Moq
-Moq.AutoMock
-FluentAssertions
+- .NET8
+- Microsoft Extensions Logging
+- AspNetCore Swashbuckle
+- EF Core
+- SignalR
+- NUnit
+- Moq
+- Moq.AutoMock
+- FluentAssertions
 
 
 Starting the frontend:
@@ -72,6 +75,6 @@ Starting the frontend:
 Starting the backend:
 - Navigate to EquipmentManagementPlatform
 - Build the project with "dotnet build"
-- Run the project with "dotnet run --project EquipmentManagementPlatform.API
+- Run the project with "dotnet build" followed by "dotnet run --project EquipmentManagementPlatform.API
 - The backend should be running on https://localhost:5001/
 - Swagger endpoint: https://localhost:5001/swagger/index.html
